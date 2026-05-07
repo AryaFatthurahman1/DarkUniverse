@@ -1,13 +1,12 @@
 <?php
-require 'db.php';
+require_once 'db.php';
 require_login();
 $userId = $_SESSION['user_id'];
 
 $info = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
-        if ($action === 'income' || $action === 'payment') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    $action = $_POST['action'];
+    if ($action === 'income' || $action === 'payment') {
             $amount = floatval($_POST['amount'] ?? 0);
             $fee = floatval($_POST['fee'] ?? 0);
             $desc = trim($_POST['description'] ?? '');
@@ -178,16 +177,16 @@ $transactionFees = $transactionFees->fetchColumn();
             <form id="form-income" method="post" class="space-y-4">
                 <input type="hidden" name="action" value="income">
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Nominal (Rp)</label>
-                    <input type="number" name="amount" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+                    <label for="income_amount" class="block text-xs text-slate-400 mb-1">Nominal (Rp)</label>
+                    <input type="number" id="income_amount" name="amount" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Fee Bank (Rp)</label>
-                    <input type="number" name="fee" step="0.01" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+                    <label for="income_fee" class="block text-xs text-slate-400 mb-1">Fee Bank (Rp)</label>
+                    <input type="number" id="income_fee" name="fee" step="0.01" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Keterangan</label>
-                    <input type="text" name="description" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+                    <label for="income_desc" class="block text-xs text-slate-400 mb-1">Keterangan</label>
+                    <input type="text" id="income_desc" name="description" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
                 </div>
                 <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-2 rounded-lg transition-all mt-2">Simpan Pemasukan</button>
             </form>
@@ -195,16 +194,16 @@ $transactionFees = $transactionFees->fetchColumn();
             <form id="form-payment" method="post" class="space-y-4" style="display:none;">
                 <input type="hidden" name="action" value="payment">
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Nominal (Rp)</label>
-                    <input type="number" name="amount" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-rose-500">
+                    <label for="payment_amount" class="block text-xs text-slate-400 mb-1">Nominal (Rp)</label>
+                    <input type="number" id="payment_amount" name="amount" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-rose-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Biaya Tambahan (Rp)</label>
-                    <input type="number" name="fee" step="0.01" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-rose-500">
+                    <label for="payment_fee" class="block text-xs text-slate-400 mb-1">Biaya Tambahan (Rp)</label>
+                    <input type="number" id="payment_fee" name="fee" step="0.01" value="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-rose-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Keterangan</label>
-                    <input type="text" name="description" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-rose-500">
+                    <label for="payment_desc" class="block text-xs text-slate-400 mb-1">Keterangan</label>
+                    <input type="text" id="payment_desc" name="description" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-rose-500">
                 </div>
                 <button type="submit" class="w-full bg-rose-500 hover:bg-rose-400 text-white font-bold py-2 rounded-lg transition-all mt-2">Simpan Pengeluaran</button>
             </form>
@@ -215,16 +214,16 @@ $transactionFees = $transactionFees->fetchColumn();
             <form method="post" class="space-y-4">
                 <input type="hidden" name="action" value="expense">
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Kategori</label>
-                    <input type="text" name="category" value="Operational" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500">
+                    <label for="exp_cat" class="block text-xs text-slate-400 mb-1">Kategori</label>
+                    <input type="text" id="exp_cat" name="category" value="Operational" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Nominal (Rp)</label>
-                    <input type="number" name="amount_expense" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500">
+                    <label for="exp_amount" class="block text-xs text-slate-400 mb-1">Nominal (Rp)</label>
+                    <input type="number" id="exp_amount" name="amount_expense" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Keterangan</label>
-                    <textarea name="description_expense" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500"></textarea>
+                    <label for="exp_desc" class="block text-xs text-slate-400 mb-1">Keterangan</label>
+                    <textarea id="exp_desc" name="description_expense" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500"></textarea>
                 </div>
                 <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2 rounded-lg transition-all mt-2">Catat Biaya</button>
             </form>
@@ -235,12 +234,12 @@ $transactionFees = $transactionFees->fetchColumn();
             <form method="post" class="space-y-4">
                 <input type="hidden" name="action" value="employee">
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Nama Lengkap</label>
-                    <input type="text" name="employee_name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                    <label for="emp_name" class="block text-xs text-slate-400 mb-1">Nama Lengkap</label>
+                    <input type="text" id="emp_name" name="employee_name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Penempatan Job</label>
-                    <select name="job_id" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                    <label for="emp_job" class="block text-xs text-slate-400 mb-1">Penempatan Job</label>
+                    <select id="emp_job" name="job_id" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                         <option value="0">Staff Umum</option>
                         <?php foreach ($jobs as $job): ?>
                             <option value="<?=$job['id']?>"><?=htmlspecialchars($job['title'])?> (<?=htmlspecialchars($job['location'])?>)</option>
@@ -248,8 +247,8 @@ $transactionFees = $transactionFees->fetchColumn();
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Gaji Bulanan (Rp)</label>
-                    <input type="number" name="salary" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                    <label for="emp_salary" class="block text-xs text-slate-400 mb-1">Gaji Bulanan (Rp)</label>
+                    <input type="number" id="emp_salary" name="salary" step="0.01" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <button type="submit" class="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 rounded-lg transition-all mt-2">Daftarkan Karyawan</button>
             </form>
