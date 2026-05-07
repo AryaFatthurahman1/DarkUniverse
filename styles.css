@@ -1,0 +1,71 @@
+body {
+    color: var(--ink);
+}
+
+a {
+    color: var(--brand);
+}
+
+.card {
+    margin-bottom: 16px;
+}
+
+header h1,
+.card h1,
+.card h3 {
+    margin: 0;
+}
+
+.small-note {
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.grid-two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    text-align: left;
+    border-bottom: 1px solid rgba(31, 27, 24, 0.08);
+    padding: 10px 8px;
+    font-size: 0.92rem;
+}
+
+.table th {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.78rem;
+}
+
+.vr {
+    border-left: 1px solid rgba(31, 27, 24, 0.12);
+    height: 24px;
+    margin: 0 8px;
+}
+
+.auth-card .kicker,
+.auth-copy .eyebrow {
+    color: rgba(255, 248, 238, 0.78);
+}
+
+.auth-card .kicker {
+    color: var(--brand);
+}
+
+.topbar a:not(.logout) {
+    font-weight: 700;
+}
+
+.table button {
+    min-width: 80px;
+}
